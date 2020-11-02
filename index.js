@@ -1,6 +1,8 @@
 import miniExpress from './mini-express.js';
 import pool from './pool.js';
 import home from './routes/homepage.js';
+import adopt from './routes/adopt.js'
+import deposit from './routes/deposit.js'
 
 
 const app = miniExpress();
@@ -21,3 +23,5 @@ pool.connect( (err, client) => {
 
 
 home(app,db);
+adopt(app, db)
+deposit(app, db)
