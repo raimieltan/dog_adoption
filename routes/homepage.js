@@ -23,7 +23,10 @@ function homepage(app, db)
 
             else {
                 const {rows: adoptee} = result
-              
+
+   
+                let random = Math.floor(Math.random() * adoptee.length)
+  
                 response.writeHead(200, {
                     'Content-type': 'text/html'
                 })
@@ -35,7 +38,7 @@ function homepage(app, db)
                 <html>
                     <body>
                     <h1> Here are the dogs </h1>
-                    ${adoptee.length}
+                    ${adoptee[random].dogname}
                     </body>
                 </html>
                 
