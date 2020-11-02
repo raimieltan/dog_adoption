@@ -1,4 +1,6 @@
+import { request } from 'http';
 import pool from '../pool.js'
+import qs from 'querystring'
 
 function depositPage(app, db)
 {
@@ -12,12 +14,65 @@ function depositPage(app, db)
         }
     })
 
+    app.post('/submit', (request, response) => {
+
+        let data = '';
+        request.on('data', (chunk) => data += chunk)
+        request.on('end', () => {
+            const formData = qs.parse(data)
+            db.query(`INSERT into adoptee values(default, '${formData.name}', ${formData.age}, '${formData.gender}', False )`, 
+            (err, result) => {
+                if(err){
+                    response.writeHead(500);
+                    response.end('Server crashed with error ' + err)
+                }
+
+                else {
+                    response.writeHead(302, {
+                        'Location':'/'
+                    })
+
+                    response.end()
+
+                }
+            }
+            )
+
+        })
+    })
+
     app.get('/deposit', (request, response) => {
         response.writeHead(200, {
             'Content-type': 'text/html'
         })
 
-        response.end('Under construction')
+        response.end(
+        `
+        
+        <html>
+            <body style="text-align: center">
+
+                <h1> Adoption Form </h1>
+                <form action='/submit' method="POST">
+
+                    <input type="text" name="name" placeholder="doggo's name"/>
+                    <input type="number" name="age" placeholder="doggo's age"/>
+                    <select name="gender">
+                        <option value="male">male</option>
+                        <option value="female">female</option>
+                    </select>
+                    <br>
+                    <button style="margin-top:10px" type="submit">Say Good Bye</button>
+                </form>
+            
+            </body>
+        
+        
+        </html>
+
+        `
+        
+        )
 
     })
 }

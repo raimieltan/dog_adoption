@@ -14,7 +14,7 @@ function homepage(app, db)
 
     app.get('/', (request, response) => {
 
-        db.query(`SELECT * FROM adoptee WHERE adopted=False` , (err, result) => {
+        db.query(`SELECT * FROM adoptee` , (err, result) => {
             if(err){
                 console.log(err)
                 response.writeHead(500);
@@ -31,7 +31,7 @@ function homepage(app, db)
                 for( const dog of adoptee){
                     let adoptionStatus = '';
                     if(dog.adopted){
-                        adoptionStatus= 'unavailable'
+                        adoptionStatus= 'Adopted'
                     }
                     else{
                         adoptionStatus = 'available'
@@ -45,18 +45,18 @@ function homepage(app, db)
                      margin-left:auto;
                      margin-right:auto;
                      width: 30%;
-                     display:flex'>
+                     border-radius: 30px;
+                     display:flex;'>
 
-                        <div style="flex:2">
-                            <img width="240px" src='https://www.randomdoggiegenerator.com/randomdoggie.php?${Math.random()}' alt='doggo pics'/>
+                        <div style="flex:2; ">
+                            <img style="border-radius: 180px" width="150px"" src='https://www.randomdoggiegenerator.com/randomdoggie.php?${Math.random()}' alt='doggo pics'/>
                         </div>
 
                         <div style="
-                        border: 1px solid red;
                         flex:2;
                         ">
 
-                            <div style="border:1px solid blue; height: 30%; margin-top:80px;"> 
+                            <div style="height: 30%; margin-top:30px;"> 
                                 ${dog.name}
                                 <br>
                                 ${dog.age} year/s old
@@ -83,11 +83,17 @@ function homepage(app, db)
                     `
                 <html>
                     <body style='text-align: center'>
-                    <h1 > Paw Cares Adoption Center </h1>
-                    <a  href="/adopt">Adopt</a>
-                    <a href="/deposit">Deposit</a>
+                        <h1 > Paw Cares Adoption Center </h1>
 
-                    ${allDogs}
+                        <div style="display:flex; width: 30%; margin-left: auto; margin-right:auto; font-size: 30px">
+                            <a style="flex:1;  color: black"  href="/adopt">Adopt</a>
+                            <a style="flex:1;  color: black" href="/deposit">Deposit</a>
+                        </div>
+    
+    
+                            ${allDogs}
+                      
+                        
                     </body>
                 </html>
                 
