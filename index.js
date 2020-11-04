@@ -1,14 +1,15 @@
-import miniExpress from './mini-express.js';
+import express from 'express';
 import pool from './pool.js';
 import home from './routes/homepage.js';
 import adopt from './routes/adopt.js'
 import deposit from './routes/deposit.js'
+import bodyParser from 'body-parser'
 
 
-const app = miniExpress();
+const app = express();
 let db;
 
-
+app.use(bodyParser.urlencoded( { extended: true } ))
 pool.connect( (err, client) => {
     if(err){
         console.log(err)

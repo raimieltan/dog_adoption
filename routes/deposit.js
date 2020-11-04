@@ -1,6 +1,5 @@
-import { request } from 'http';
 import pool from '../pool.js'
-import qs from 'querystring'
+
 
 function depositPage(app, db)
 {
@@ -16,11 +15,7 @@ function depositPage(app, db)
 
     app.post('/submit', (request, response) => {
 
-        let data = '';
-        request.on('data', (chunk) => data += chunk)
-        request.on('end', () => {
-            const formData = qs.parse(data)
-            db.query(`INSERT into adoptee values(default, '${formData.name}', ${formData.age}, '${formData.gender}', False )`, 
+            db.query(`INSERT into adoptee values(default, '${request.body.name}', ${request.body.age}, '${request.body.gender}', False )`, 
             (err, result) => {
                 if(err){
                     response.writeHead(500);
@@ -38,7 +33,7 @@ function depositPage(app, db)
             }
             )
 
-        })
+        
     })
 
     app.get('/deposit', (request, response) => {
